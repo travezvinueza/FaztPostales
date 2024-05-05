@@ -1,0 +1,104 @@
+@using Microsoft.AspNetCore.Identity
+@using Mvc.Models.Entity
+@inject UserManager<Usuario> UserManager
+@model IEnumerable<Mvc.Models.Entity.Usuario>
+
+
+<p>
+    <a onclick="showInPopup('@Url.Action("AddUser", "Supervisor", new { id = 0 }, Context.Request.Scheme)')"
+        class="btn btn-sm btn-success text-white">
+        <i class="fas fa-user-plus"></i> Agregar Cliente
+    </a>
+</p>
+
+
+<div class="col-md-12">
+    <div class="card">
+        <div class=" card-header text-center">
+            <h5>Lista de Clientes</h5>
+        </div>
+        <div class=" card-body">
+            <table id="usuario" class="table responsive table stripped">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Tipo Identificacion</th>
+                        <th>Numero Identificacion</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Telefono</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="~/Uploads/@Html.DisplayFor(modelItem => item.ProfilePicture)"
+                                    style="width: 70px; height: 70px; border-radius: 50%;" alt="Profile Picture">
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TipoIdentificacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NumeroIdentificacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Nombres)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Apellidos)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                            <td>
+                                @{
+                                    var userRoles = await UserManager.GetRolesAsync(item);
+                                }
+
+                                @foreach (var role in userRoles)
+                                {
+                                    <span>@role</span>
+                                }
+                            </td>
+
+                            <td>
+                                <a onclick="showInPopup('@Url.Action("Editar", "Supervisor", new { id = new Guid(item.Id) })')"
+                                    class="btn btn-primary btn-sm">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('@item.UserName')">
+                                    <i class='fa-solid fa-trash-can'></i></button>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_MostrarModal" />
+    <script src="~/js/showmodal.js"></script>
+
+    <script>
+
+        function eliminarUsuario(username) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "La eliminación del usuario es irreversible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Supervisor/EliminarUsuario?username=' + username;
+                }
+            });
+        }
+    </script>
+
+}
