@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>IniciarSesion</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
 </head>
 
 <body>
@@ -17,14 +18,16 @@
             <div class="col-12 col-xl-4 col-md-6">
                 <div class="card">
                     <div class="card-header text-center">
-                        <strong>Iniciar Sesion</strong>
+                        <strong>Acceso al Sistema</strong>
+                        <h2>Servicios Postales</h2>
+                        
                     </div>
                     <div class="card-body">
 
                         <form asp-controller="Login" asp-action="IniciarSesion" method="post">
 
                             <input asp-for="UserName"  type="text" class="form-control mb-3" placeholder="Usuario"  />
-                            <input asp-for="Password" type="password" class="form-control mb-3" placeholder="Ingresa tu contraseña" />
+                            <input asp-for="Password" type="password" class="form-control mb-3" placeholder="Contraseña" />
 
                             <div class="form-group mt-2">
                                 <div class="form-check">

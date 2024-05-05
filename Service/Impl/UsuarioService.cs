@@ -28,7 +28,7 @@ namespace Mvc.Service.Impl
             _fileService = fileService;
         }
 
-        public async Task<IdentityResult> AdminCrearUsuario(Usuario usuario, string password)
+        public async Task<IdentityResult> SupervisorCrearUsuario(Usuario usuario, string password)
         {
             return await _userManager.CreateAsync(usuario, password);
         }
@@ -38,7 +38,7 @@ namespace Mvc.Service.Impl
             var usuario = await _context.Users
                 .FirstOrDefaultAsync(u => u.UserName == username);
 
-            return usuario!;
+            return usuario;
         }
 
         public async Task VerificarRol(string nombreRol)
@@ -87,10 +87,11 @@ namespace Mvc.Service.Impl
         {
             Usuario usuario = new Usuario
             {
-                ProfilePicture = model.ProfilePicture,
+                NumeroIdentificacion = model.NumeroIdentificacion,
+                Nombres = model.Nombres,
+                Apellidos = model.Apellidos,
                 UserName = model.UserName,
                 Email = model.Email ?? throw new ArgumentNullException(nameof(model.Email), "El correo electrónico no puede ser nulo."),
-                PhoneNumber = model.PhoneNumber,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 TipoUsuario = model.TipoUsuario

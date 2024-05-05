@@ -69,30 +69,12 @@ namespace Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(UsuarioViewModel model, IFormFile imageFile)
+        public async Task<IActionResult> Registro(UsuarioViewModel model)
         {
-            if (imageFile == null || imageFile.Length == 0)
-            {
-                ModelState.AddModelError("Imagen", "Por favor, seleccione una imagen.");
-                return View(model);
-            }
+
 
             if (ModelState.IsValid)
             {
-                if (imageFile != null)
-                {
-                    var imageResult = _fileService.SaveImage(imageFile);
-
-                    if (imageResult.Item1 == 1)
-                    {
-                        model.ProfilePicture = imageResult.Item2;
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, $"Error al guardar la imagen: {imageResult.Item2}");
-                        return View(model);
-                    }
-                }
 
                 Usuario usuario = await _usuarioService.CrearUsuario(model);
                 if (usuario == null)

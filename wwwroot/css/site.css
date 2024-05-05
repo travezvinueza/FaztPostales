@@ -19,4 +19,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-image: url('/images/fondo.jpg'); /* Ruta relativa a la imagen */
+    background-size: cover; /* Escala la imagen para llenar el fondo */
+    background-repeat: no-repeat; /* Evita que se repita la imagen */
 }

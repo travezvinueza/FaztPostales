@@ -9,7 +9,20 @@ namespace Mvc.Data
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
+        public DbSet<Envio> Envios { get; set; }
 
-        
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Usuario>()
+                 .HasMany(u => u.Envios)
+                 .WithOne(e => e.Usuario)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+        }
+
     }
 }

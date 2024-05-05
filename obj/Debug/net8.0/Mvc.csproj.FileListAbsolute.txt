@@ -144,3 +144,4 @@ C:\PROYECTOS\DOTNET\Mvc\obj\Debug\net8.0\refint\Mvc.dll
 C:\PROYECTOS\DOTNET\Mvc\obj\Debug\net8.0\Mvc.pdb
 C:\PROYECTOS\DOTNET\Mvc\obj\Debug\net8.0\Mvc.genruntimeconfig.cache
 C:\PROYECTOS\DOTNET\Mvc\obj\Debug\net8.0\ref\Mvc.dll
+C:\PROYECTOS\DOTNET\Mvc\obj\Debug\net8.0\Mvc.sourcelink.json

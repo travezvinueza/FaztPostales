@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Mvc.Enum;
 
@@ -22,6 +22,9 @@ namespace Mvc.Models.Entity
         public string? ProfilePicture { get; set; }
 
         public TipoUsuario TipoUsuario { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Envio> Envios { get; set; } = new List<Envio>();
         
         
     }

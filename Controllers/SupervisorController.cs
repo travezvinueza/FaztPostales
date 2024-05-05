@@ -136,43 +136,40 @@ namespace Mvc.Controllers
             return RedirectToAction("Lista");
         }
 
+
         //actualizar Cliente
         [HttpGet]
-        public async Task<IActionResult> Editar(Guid id)
+        public async Task<IActionResult> Editar(string username)
         {
-            var usuario = await _usuarioService.AdminObtenerUsuario(id);
+            var usuario = await _usuarioService.ObtenerUsuario(username);
             if (usuario == null)
             {
                 return NotFound();
             }
             var rolesUsuario = await _userManager.GetRolesAsync(usuario);
 
-            var model = new UsuarioViewModel
+            var model = new ActualizarViewModel
             {
-                ProfilePicture = usuario.ProfilePicture,
-                UserName = usuario.UserName,
-                TipoIdentificacion = usuario.TipoIdentificacion,
-                NumeroIdentificacion = usuario.NumeroIdentificacion,
-                Nombres = usuario.Nombres,
-                Apellidos = usuario.Apellidos,
-                Email = usuario.Email,
-                PhoneNumber = usuario.PhoneNumber,
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                Id = usuario.Id,
+                UserName = usuario.UserName!,
+                TipoIdentificacion = usuario.TipoIdentificacion!,
+                NumeroIdentificacion = usuario.NumeroIdentificacion!,
+                Nombres = usuario.Nombres!,
+                Apellidos = usuario.Apellidos!,
+                Email = usuario.Email!,
+                PhoneNumber = usuario.PhoneNumber!,
                 AvailableRoles = rolesUsuario.ToList()
-
             };
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(UsuarioViewModel model, IFormFile Imagen)
+        public async Task<IActionResult> Editar(ActualizarViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var usuario = await _usuarioService.AdminObtenerUsuario(new Guid(model.Id));
+                Usuario usuario = await _usuarioService.ObtenerUsuario(User.Identity.Name);
                 if (usuario == null)
                 {
                     return NotFound();

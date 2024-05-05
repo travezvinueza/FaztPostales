@@ -12,7 +12,7 @@ using Mvc.Data;
 namespace Mvc.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240504182825_MigracionInicial")]
+    [Migration("20240505150406_MigracionInicial")]
     partial class MigracionInicial
     {
         /// <inheritdoc />

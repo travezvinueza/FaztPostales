@@ -1,4 +1,4 @@
-@model Mvc.Models.UsuarioViewModel
+@model Mvc.Models.ActualizarViewModel
 
 @{
     ViewData["Title"] = "EditarCliente";
@@ -9,17 +9,13 @@
     <h2>Actualizar Cliente</h2>
     <hr />
 
-    <form asp-action="Editar" asp-controller="Supervisor" method="post" enctype="multipart/form-data">
+    <form asp-action="Editar" asp-controller="Supervisor" method="post" >
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserName" />
+        <input type="hidden" asp-for="TipoUsuario" />
 
         <div class="row">
-            <!-- Vista previa de la imagen -->
-            <div class="form-group">
-                <img id="imagenVistaPrevia" class="img-thumbnail align-middle"
-                    style="max-width: 150px; max-height: 150px; border-radius: 50%;" />
-            </div>
-
+           
             <div class="col-md-6">
 
                 <div class="form-group mb-3">
@@ -52,9 +48,7 @@
                     <span asp-validation-for="Apellidos" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
-                    <input asp-for="ImageFile" type="file" class="form-control-file" />
-                </div>
+                
 
             </div>
 
@@ -67,7 +61,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <select asp-for="AvailableRoles" class="form-control">
+                    <select asp-for="TipoUsuario" class="form-control">
                         <option value="Supervisor">Supervisor</option>
                         <option value="Cliente">Cliente</option>
                     </select>
@@ -76,15 +70,6 @@
 
                 <div class="form-group mb-3">
                     <input asp-for="PhoneNumber" placeholder="Telefono" class="form-control" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <input asp-for="Password" placeholder="Contraseña" type="password" class="form-control" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <input asp-for="PasswordConfirm" placeholder="Confimar Contraseña" type="password"
-                        class="form-control" />
                 </div>
 
             </div>

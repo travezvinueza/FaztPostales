@@ -30,7 +30,7 @@ builder.Services.AddNotyf(config =>
  });
 
 
-builder.Services.AddTransient<AdminDb>();
+builder.Services.AddTransient<SupervisorDb>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
@@ -42,7 +42,7 @@ void SeedData(WebApplication app)
     IServiceScopeFactory scopedFactory = app.Services.GetService<IServiceScopeFactory>();
     using (IServiceScope scope = scopedFactory.CreateScope())
     {
-        AdminDb service = scope.ServiceProvider.GetService<AdminDb>();
+        SupervisorDb service = scope.ServiceProvider.GetService<SupervisorDb>();
         service.SeedAsync().Wait();
     }
 }

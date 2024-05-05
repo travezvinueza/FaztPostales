@@ -6,9 +6,7 @@ namespace Mvc.Service
 {
     public interface IUsuarioService
     {
-        Task<IdentityResult> AdminCrearUsuario(Usuario usuario, string password);
-
-        
+        Task<IdentityResult> SupervisorCrearUsuario(Usuario usuario, string password);
         Task<Usuario> ObtenerUsuario(string username);
         Task VerificarRol(string nombreRol);
         Task AsignarRol(Usuario usuario, string nombreRol);

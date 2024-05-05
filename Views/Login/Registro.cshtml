@@ -17,7 +17,7 @@
             <div class="col-12 col-xl-4 col-md-6">
                 <div class="card">
                     <div class="card-header text-center">
-                       <strong>Registro Cliente</strong> 
+                        <h3>Registro para la plataforma de Servicios Postales</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group text-center">
@@ -30,14 +30,23 @@
                             <input type="hidden" asp-for="Id" />
                             <input type="hidden" asp-for="TipoUsuario" />
 
-                            <input class="form-control mb-3" type="file" asp-for="ImageFile">
+                            <input class="form-control mb-3" type="text" placeholder="Cedula" required
+                                asp-for="NumeroIdentificacion" />
+
+                            <input class="form-control mb-3" type="text" placeholder="Nombres" required
+                                asp-for="Nombres" />
+
+                            <input class="form-control mb-3" type="text" placeholder="Apellidos" required
+                                asp-for="Apellidos" />
+
                             <input class="form-control mb-3" type="text" placeholder="Usuario" required
                                 asp-for="UserName" />
+
                             <input class="form-control mb-3" type="text" placeholder="Email" required asp-for="Email" />
-                            <input class="form-control mb-3" type="number" placeholder="Telefono" autocomplete="off"
-                                asp-for="PhoneNumber" />
+
                             <input class="form-control mb-3" autocomplete="off" type="password" placeholder="Contraseña"
                                 required asp-for="Password" />
+
                             <input class="form-control mb-3" autocomplete="off" type="password"
                                 placeholder="Confirmar Contraseña" asp-for="PasswordConfirm" />
 
@@ -61,29 +70,7 @@
             </div>
         </div>
     </div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Función para mostrar la vista previa de la imagen
-        document.getElementById("ImageFile").addEventListener("change", function () {
-            mostrarVistaPrevia(this);
-        });
-
-        function mostrarVistaPrevia(input) {
-            var fileInput = input.files[0];
-            var imagePreview = document.getElementById("imagenVistaPrevia");
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                console.log('Vista previa de la imagen:', e.target.result);
-                imagePreview.src = e.target.result;
-            };
-
-            reader.readAsDataURL(fileInput);
-        }
-    </script>
+    
 </body>
 
 </html>
