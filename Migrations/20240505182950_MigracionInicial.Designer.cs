@@ -12,7 +12,7 @@ using Mvc.Data;
 namespace Mvc.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240505150406_MigracionInicial")]
+    [Migration("20240505182950_MigracionInicial")]
     partial class MigracionInicial
     {
         /// <inheritdoc />
@@ -158,6 +158,40 @@ namespace Mvc.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Mvc.Models.Entity.Envio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Envios");
+                });
+
             modelBuilder.Entity("Mvc.Models.Entity.Usuario", b =>
                 {
                     b.Property<string>("Id")
@@ -290,6 +324,21 @@ namespace Mvc.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Mvc.Models.Entity.Envio", b =>
+                {
+                    b.HasOne("Mvc.Models.Entity.Usuario", "Usuario")
+                        .WithMany("Envios")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Mvc.Models.Entity.Usuario", b =>
+                {
+                    b.Navigation("Envios");
                 });
 #pragma warning restore 612, 618
         }

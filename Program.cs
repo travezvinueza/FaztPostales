@@ -32,6 +32,7 @@ builder.Services.AddNotyf(config =>
 
 builder.Services.AddTransient<SupervisorDb>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IEnvioService, EnvioService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
 var app = builder.Build();

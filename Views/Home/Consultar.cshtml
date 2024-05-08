@@ -1,0 +1,41 @@
+@model IEnumerable<Mvc.Models.Entity.Envio>
+
+<h1>Consulta de Envíos por Número de Cédula</h1>
+
+<form asp-action="Consultar" method="get">
+    <div class="form-group">
+        <label for="numeroCedula">Número de Cédula:</label>
+        <input type="text" name="numeroCedula" class="form-control" value="@ViewData["CurrentFilter"]" />
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+@if (Model.Any())
+{
+    <h2>Envíos relacionados con el usuario:</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var envio in Model)
+            {
+                <tr>
+                    <td>@envio.Codigo</td>
+                    <td>@envio.Title</td>
+                    <td>@envio.Telefono</td>
+                    <td>@envio.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron envíos relacionados con el usuario.</p>
+}

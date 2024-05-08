@@ -138,7 +138,7 @@ namespace Mvc.Controllers
 
 
         //actualizar Cliente
-        [HttpGet]
+      [HttpGet]
         public async Task<IActionResult> Editar(string username)
         {
             var usuario = await _usuarioService.ObtenerUsuario(username);
@@ -146,71 +146,48 @@ namespace Mvc.Controllers
             {
                 return NotFound();
             }
-            var rolesUsuario = await _userManager.GetRolesAsync(usuario);
+            
+            // Aquí puedes obtener los roles del usuario y pasarlos al modelo de vista si es necesario
+            var rolesUsuario = await _usuarioService.ObtenerRolesUsuario(usuario.UserName);
 
             var model = new ActualizarViewModel
             {
-                UserName = usuario.UserName!,
+                UserName = usuario.UserName,
                 TipoIdentificacion = usuario.TipoIdentificacion!,
                 NumeroIdentificacion = usuario.NumeroIdentificacion!,
                 Nombres = usuario.Nombres!,
                 Apellidos = usuario.Apellidos!,
                 Email = usuario.Email!,
                 PhoneNumber = usuario.PhoneNumber!,
-                AvailableRoles = rolesUsuario.ToList()
+                AvailableRoles = rolesUsuario
             };
+
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(ActualizarViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Usuario usuario = await _usuarioService.ObtenerUsuario(User.Identity.Name);
-                if (usuario == null)
-                {
-                    return NotFound();
-                }
-
-                usuario.UserName = model.UserName;
-                usuario.TipoIdentificacion = model.TipoIdentificacion;
-                usuario.NumeroIdentificacion = model.NumeroIdentificacion;
-                usuario.Nombres = model.Nombres;
-                usuario.Apellidos = model.Apellidos;
-                usuario.Email = model.Email;
-                usuario.PhoneNumber = model.PhoneNumber;
-
-                // Actualiza el usuario en la base de datos
-                await _usuarioService.ActualizarUsuario(usuario);
-
-                // Verifica si el usuario ya tiene roles asignados
-                var userRoles = await _userManager.GetRolesAsync(usuario);
-                if (userRoles.Any())
-                {
-                    // Si el usuario ya tiene roles, elimina todos los roles existentes
-                    await _userManager.RemoveFromRolesAsync(usuario, userRoles);
-                }
-
-                // Agrega el nuevo rol al usuario
-                var result = await _userManager.AddToRoleAsync(usuario, model.TipoUsuario.ToString());
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Lista"); // Redirige a donde desees después de agregar el rol
-                }
-                else
-                {
-                    ModelState.AddModelError("", "No se pudo agregar el rol al usuario.");
-                    return View(model);
-                }
+                return View(model);
             }
 
-            // Si el modelo no es válido, vuelve a mostrar el formulario de edición con los errores de validación
+            var result = await _usuarioService.UpdateUser(model);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Lista", "Supervisor"); // Redirige a la acción Lista del controlador Usuario
+            }
+
+            // Si hay algún error al actualizar el usuario, añade los errores al ModelState y vuelve a mostrar el formulario
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
             return View(model);
         }
-
 
 
 
@@ -221,15 +198,7 @@ namespace Mvc.Controllers
             return View(roles);
         }
 
-        public IActionResult Paquetes()
-        {
-            return View();
-        }
 
-        public IActionResult Consultar()
-        {
-            return View();
-        }
 
 
     }

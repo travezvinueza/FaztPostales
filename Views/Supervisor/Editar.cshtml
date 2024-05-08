@@ -9,17 +9,17 @@
     <h2>Actualizar Cliente</h2>
     <hr />
 
-    <form asp-action="Editar" asp-controller="Supervisor" method="post" >
+    <form asp-action="Editar" asp-controller="Supervisor" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="UserName" />
         <input type="hidden" asp-for="TipoUsuario" />
 
         <div class="row">
-           
+
             <div class="col-md-6">
 
                 <div class="form-group mb-3">
-                    <input asp-for="UserName" placeholder="Usuario" class="form-control" />
+                    <input asp-for="UserName" placeholder="Usuario" class="form-control" readonly />
                 </div>
 
                 <div class="form-group mb-3">
@@ -43,15 +43,7 @@
                     <span asp-validation-for="Nombres" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
-                    <input asp-for="Apellidos" placeholder="Apellidos" class="form-control" />
-                    <span asp-validation-for="Apellidos" class="text-danger"></span>
-                </div>
-
-                
-
             </div>
-
 
             <div class="col-md-6">
 
@@ -61,15 +53,16 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <select asp-for="TipoUsuario" class="form-control">
-                        <option value="Supervisor">Supervisor</option>
-                        <option value="Cliente">Cliente</option>
-                    </select>
-                    
+                    <input asp-for="TipoUsuario" placeholder="Telefono" class="form-control" readonly/>
                 </div>
 
                 <div class="form-group mb-3">
                     <input asp-for="PhoneNumber" placeholder="Telefono" class="form-control" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <input asp-for="Apellidos" placeholder="Apellidos" class="form-control" />
+                    <span asp-validation-for="Apellidos" class="text-danger"></span>
                 </div>
 
             </div>

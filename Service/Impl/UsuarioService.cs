@@ -189,5 +189,57 @@ namespace Mvc.Service.Impl
 
             return result;
         }
+
+       
+
+        public async Task<IdentityResult> UpdateUser(ActualizarViewModel model)
+        {
+            // Obtener el usuario existente
+            var usuario = await _userManager.FindByNameAsync(model.UserName);
+
+            if (usuario == null)
+            {
+                // Manejar el caso en que el usuario no se encuentre
+                return IdentityResult.Failed(new IdentityError { Description = "Usuario no encontrado." });
+            }
+
+            // Actualizar las propiedades del usuario
+            usuario.Email = model.Email;
+            usuario.UserName = model.UserName;
+            usuario.TipoIdentificacion = model.TipoIdentificacion;
+            usuario.NumeroIdentificacion = model.NumeroIdentificacion;
+            usuario.Nombres = model.Nombres;
+            usuario.Apellidos = model.Apellidos;
+            usuario.PhoneNumber = model.PhoneNumber;
+           
+            var result = await _userManager.UpdateAsync(usuario);
+
+            if (result.Succeeded)
+            {
+                // Actualizar roles del usuario
+                var roles = await _userManager.GetRolesAsync(usuario);
+               
+
+                var resultRoles = await _userManager.AddToRolesAsync(usuario, model.AvailableRoles);
+                if (!resultRoles.Succeeded)
+                {
+                    // Manejar el caso en que no se puedan actualizar los roles
+                    return IdentityResult.Failed(new IdentityError { Description = "Error al actualizar los roles del usuario." });
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<List<string>> ObtenerRolesUsuario(string username)
+        {
+            var usuario = await _userManager.FindByNameAsync(username);
+            if (usuario == null)
+            {
+                return new List<string>();
+            }
+
+            return (await _userManager.GetRolesAsync(usuario)).ToList();
+        }
     }
 }

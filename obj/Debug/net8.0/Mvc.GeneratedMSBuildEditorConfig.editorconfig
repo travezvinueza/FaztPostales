@@ -18,6 +18,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\PROYECTOS\DOTNET\Mvc
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/PROYECTOS/DOTNET/Mvc/Views/Home/Consultar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb25zdWx0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/PROYECTOS/DOTNET/Mvc/Views/Home/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/PROYECTOS/DOTNET/Mvc/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -58,20 +66,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxBZGRVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Consultar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxDb25zdWx0YXIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Lista.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxMaXN0YS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Paquetes.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxQYXF1ZXRlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Roles.cshtml]

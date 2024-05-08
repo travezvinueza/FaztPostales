@@ -12,18 +12,14 @@
 
 <body>
 
-    <div class="container mt-5 pt-5">
+    <div class="container mt-3 pt-4">
         <div class="row justify-content-center">
             <div class="col-12 col-xl-4 col-md-6">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h3>Registro para la plataforma de Servicios Postales</h3>
+                        <h4>Registro para la plataforma de Servicios Postales</h4>
                     </div>
                     <div class="card-body">
-                        <div class="form-group text-center">
-                            <img id="imagenVistaPrevia" class="img-thumbnail align-middle"
-                                style="max-width: 100px; max-height: 150px; border-radius: 50%;" />
-                        </div>
 
                         <form asp-controller="Login" asp-action="Registro" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class=" text-danger"></div>
@@ -70,7 +66,7 @@
             </div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

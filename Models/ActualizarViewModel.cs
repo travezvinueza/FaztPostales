@@ -23,6 +23,9 @@ namespace Mvc.Models
         public TipoUsuario TipoUsuario { get; set; }
         
         public List<string> AvailableRoles { get; set; } = new List<string>();
+
+        
+        public List<string> SelectedRoles { get; set; } = new List<string>();
         
     }
 }
