@@ -9,6 +9,7 @@ namespace Mvc.Service
         void Add(Envio calendarEvent);
         void Update(Envio calendarEvent);
         Envio GetByIdAndUsuarioId(int id, string usuarioId);
+        IEnumerable<Envio> GetByUsuarioId(string usuarioId);
         void Delete(int id);
         Task<List<Envio>> GetEnviosAsync();
         

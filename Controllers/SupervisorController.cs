@@ -2,7 +2,9 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mvc.Data;
+using Mvc.Enum;
 using Mvc.Models;
 using Mvc.Models.Entity;
 using Mvc.Service;
@@ -34,9 +36,61 @@ namespace Mvc.Controllers
 
         }
 
+
+        
+        public async Task<IActionResult> ActivateClient(string clientId)
+        {
+            var client = await _userManager.FindByIdAsync(clientId);
+            if (client == null || client.TipoUsuario != TipoUsuario.Cliente)
+            {
+                return NotFound();
+            }
+
+            client.LockoutEnabled = true;
+            var result = await _userManager.UpdateAsync(client);
+
+            if (result.Succeeded)
+            {
+                _notifyService.Success($"El cliente {client.UserName} ha sido activado correctamente");
+                return RedirectToAction("Lista", "Supervisor");
+            }
+            else
+            {
+                _notifyService.Error("Error al activar el cliente");
+                return View("Error");
+            }
+        }
+
+       
+        public async Task<IActionResult> DeactivateClient(string clientId)
+        {
+            var client = await _userManager.FindByIdAsync(clientId);
+            if (client == null || client.TipoUsuario != TipoUsuario.Cliente)
+            {
+                return NotFound();
+            }
+
+            client.LockoutEnabled = false;
+            var result = await _userManager.UpdateAsync(client);
+
+            if (result.Succeeded)
+            {
+                _notifyService.Success($"El cliente {client.UserName} ha sido desactivado correctamente");
+                return RedirectToAction("Lista", "Supervisor");
+            }
+            else
+            {
+                _notifyService.Error("Error al desactivar el cliente");
+                return View("Error");
+            }
+        }
+
+
+
+
         public async Task<IActionResult> Lista()
         {
-            var usuarios = await _usuarioService.GetAll();
+            var usuarios = await _usuarioService.GetAllAsync();
             return View(usuarios);
         }
 
@@ -138,7 +192,7 @@ namespace Mvc.Controllers
 
 
         //actualizar Cliente
-      [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Editar(string username)
         {
             var usuario = await _usuarioService.ObtenerUsuario(username);
@@ -146,7 +200,7 @@ namespace Mvc.Controllers
             {
                 return NotFound();
             }
-            
+
             // Aquí puedes obtener los roles del usuario y pasarlos al modelo de vista si es necesario
             var rolesUsuario = await _usuarioService.ObtenerRolesUsuario(usuario.UserName);
 
@@ -191,11 +245,59 @@ namespace Mvc.Controllers
 
 
 
-
-        public IActionResult Roles()
+        public async Task<IActionResult> IndexAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var roles = _context.Roles.ToList();
-            return View(roles);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IsActiveSortParam"] = sortOrder == "IsActive" ? "isactive_desc" : "IsActive";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var usuarios = _context.Users
+                .Include(u => u.Envios)
+                .Where(u => u.Nombres.Contains(searchString) || u.NumeroIdentificacion.Contains(searchString))
+                .Select(u => new UsuarioViewModel
+                {
+                    Nombres = u.Nombres,
+                    Apellidos = u.Apellidos,
+                    NumeroIdentificacion = u.NumeroIdentificacion,
+                    Email = u.Email,
+                    Envios = u.Envios.Select(e => new EnvioViewModel
+                    {
+                        Codigo = e.Codigo,
+                        Title = e.Title,
+                        Telefono = e.Telefono
+                    }).ToList()
+                });
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                usuarios = usuarios.Where(u => u.Nombres.Contains(searchString) || u.NumeroIdentificacion.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    usuarios = usuarios.OrderByDescending(u => u.Nombres);
+                    break;
+                // Otros casos de ordenamiento
+                default:
+                    usuarios = usuarios.OrderBy(u => u.Nombres);
+                    break;
+            }
+
+            int pageSize = 10;
+            var model = await PaginatedList<UsuarioViewModel>.CreateAsync(usuarios.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(model);
         }
 
 

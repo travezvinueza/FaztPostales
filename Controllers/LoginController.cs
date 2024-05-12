@@ -1,3 +1,5 @@
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Data;
 using Mvc.Enum;
@@ -10,17 +12,26 @@ namespace Mvc.Controllers
     public class LoginController : Controller
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly DatabaseContext _context;
         protected readonly IFileService _fileService;
+        private readonly INotyfService _notifyService;
 
         public LoginController(
             IUsuarioService usuarioService,
+           UserManager<Usuario> userManager,
+           SignInManager<Usuario> signInManager,
             DatabaseContext context,
-            IFileService fileService)
+            IFileService fileService,
+            INotyfService notifyService)
         {
             _usuarioService = usuarioService;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _context = context;
             _fileService = fileService;
+            _notifyService = notifyService;
         }
 
 
@@ -32,7 +43,7 @@ namespace Mvc.Controllers
                 {
                     return RedirectToAction("Lista", "Supervisor");
                 }
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Consultar", "Home");
             }
             return View(new LoginViewModel());
         }
@@ -45,16 +56,30 @@ namespace Mvc.Controllers
                 Microsoft.AspNetCore.Identity.SignInResult result = await _usuarioService.IniciarSesion(model);
                 if (result.Succeeded)
                 {
-                    if (User.IsInRole("Supervisor"))
+                    var usuario = await _userManager.FindByNameAsync(model.UserName);
+                    if (usuario != null)
                     {
-                        return RedirectToAction("Lista", "Supervisor");
+                        if (usuario.LockoutEnabled)
+                        {
+                            if (User.IsInRole("Supervisor"))
+                            {
+                                return RedirectToAction("Lista", "Supervisor");
+                            }
+                            return RedirectToAction("Consultar", "Home");
+                        }
+                        else
+                        {
+                            await _signInManager.SignOutAsync();
+                            _notifyService.Error("Su cuenta ha sido desactivada. Contacte al Supervisor del sitema para más información.");
+                            return RedirectToAction("IniciarSesion", "Login");
+                        }
                     }
-                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos.");
             }
             return View(model);
         }
+
 
 
         public IActionResult Registro()
@@ -72,9 +97,15 @@ namespace Mvc.Controllers
         public async Task<IActionResult> Registro(UsuarioViewModel model)
         {
 
-
             if (ModelState.IsValid)
             {
+                // Verificar si ya existe un usuario con el mismo número de identificación
+                var existingUser = await _usuarioService.ObtenerPorNumeroIdentificacion(model.NumeroIdentificacion);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError(string.Empty, $"El número de identificación '{model.NumeroIdentificacion}' ya está asociado a otro usuario.");
+                    return View(model);
+                }
 
                 Usuario usuario = await _usuarioService.CrearUsuario(model);
                 if (usuario == null)
@@ -92,7 +123,7 @@ namespace Mvc.Controllers
                 var result = await _usuarioService.IniciarSesion(loginViewModel);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Consultar", "Home");
                 }
             }
             return View(model);
@@ -177,7 +208,7 @@ namespace Mvc.Controllers
                 usuario.ProfilePicture = model.ProfilePicture;
 
                 await _usuarioService.ActualizarUsuario(usuario);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Consultar", "Home");
             }
 
             return View(model);

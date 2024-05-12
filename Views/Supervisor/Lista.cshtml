@@ -67,6 +67,22 @@
 
                                 <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('@item.UserName')">
                                     <i class='fa-solid fa-trash-can'></i></button>
+
+
+                                @if (item.LockoutEnabled)
+                                {
+                                    <a asp-controller="Supervisor" asp-action="DeactivateClient" asp-route-clientId="@item.Id"
+                                        class="btn btn-warning btn-sm">
+                                        <i class="fa fa-ban"></i> Desactivar
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Supervisor" asp-action="ActivateClient" asp-route-clientId="@item.Id"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fa fa-check"></i> Activar
+                                    </a>
+                                }
                             </td>
 
                         </tr>

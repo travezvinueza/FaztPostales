@@ -78,13 +78,20 @@ namespace Mvc.Service.Impl
             true);
         }
 
-         public async Task CerrarSesion()
+        public async Task CerrarSesion()
         {
             await _signInManager.SignOutAsync();
         }
 
+        public async Task<Usuario> ObtenerPorNumeroIdentificacion(string numeroIdentificacion)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.NumeroIdentificacion == numeroIdentificacion);
+        }
+
+
         public async Task<Usuario> CrearUsuario(UsuarioViewModel model)
         {
+
             Usuario usuario = new Usuario
             {
                 NumeroIdentificacion = model.NumeroIdentificacion,
@@ -101,8 +108,13 @@ namespace Mvc.Service.Impl
 
             if (result != IdentityResult.Success)
             {
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error de creación de usuario: {error.Code} - {error.Description}");
+                }
                 throw new InvalidOperationException($"Error al crear el usuario: {string.Join(", ", result.Errors)}");
             }
+
 
             Usuario nuevoUsuario = await ObtenerUsuario(usuario.UserName!);
 
@@ -127,7 +139,7 @@ namespace Mvc.Service.Impl
             .FirstOrDefaultAsync(u => u.Id == userId.ToString());
         }
 
-        public async Task<List<Usuario>> GetAll()
+        public async Task<List<Usuario>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
@@ -190,7 +202,7 @@ namespace Mvc.Service.Impl
             return result;
         }
 
-       
+
 
         public async Task<IdentityResult> UpdateUser(ActualizarViewModel model)
         {
@@ -211,14 +223,14 @@ namespace Mvc.Service.Impl
             usuario.Nombres = model.Nombres;
             usuario.Apellidos = model.Apellidos;
             usuario.PhoneNumber = model.PhoneNumber;
-           
+
             var result = await _userManager.UpdateAsync(usuario);
 
             if (result.Succeeded)
             {
                 // Actualizar roles del usuario
                 var roles = await _userManager.GetRolesAsync(usuario);
-               
+
 
                 var resultRoles = await _userManager.AddToRolesAsync(usuario, model.AvailableRoles);
                 if (!resultRoles.Succeeded)

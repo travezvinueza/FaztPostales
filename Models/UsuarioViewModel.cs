@@ -19,6 +19,12 @@ namespace Mvc.Models
         [StringLength(20, MinimumLength = 6, ErrorMessage = "El campo {0} debe tener entre {2} y {1} carácteres.")]
         public string PasswordConfirm { get; set; } = string.Empty;
         public List<string> AvailableRoles { get; set; } = new List<string>();
+
+        public List<Envio> Envioss { get; set; } = new List<Envio>();
+
+        public List<EnvioViewModel> Envios { get; set; } = new List<EnvioViewModel>();
         
     }
 }
+
+

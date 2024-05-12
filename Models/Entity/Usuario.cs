@@ -20,13 +20,13 @@ namespace Mvc.Models.Entity
         public IFormFile? ImageFile { get; set; }
         
         public string? ProfilePicture { get; set; }
+        public bool IsActive { get; set; }
 
         public TipoUsuario TipoUsuario { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Envio> Envios { get; set; } = new List<Envio>();
-        
-        
+    
     }
 }
 

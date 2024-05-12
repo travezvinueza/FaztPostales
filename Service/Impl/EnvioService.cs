@@ -12,8 +12,8 @@ namespace Mvc.Service.Impl
         {
             _context = context;
         }
-        
-        
+
+
         public void Add(Envio envio)
         {
             _context.Envios.Add(envio);
@@ -47,6 +47,12 @@ namespace Mvc.Service.Impl
             return _context.Envios.FirstOrDefault(e => e.Id == id && e.UsuarioId == usuarioId);
         }
 
+        public IEnumerable<Envio> GetByUsuarioId(string usuarioId)
+        {
+            return _context.Envios.Where(e => e.UsuarioId == usuarioId).ToList();
+        }
+
+
         public async Task<List<Envio>> GetEnviosAsync()
         {
             return await _context.Envios.Include(ce => ce.Usuario).ToListAsync();
@@ -54,9 +60,9 @@ namespace Mvc.Service.Impl
 
         public void Update(Envio envio)
         {
-           _context.Envios.Update(envio);
+            _context.Envios.Update(envio);
             _context.SaveChanges();
         }
-        
+
     }
 }

@@ -18,13 +18,16 @@ namespace Mvc.Service
 
         Task<Usuario> AdminObtenerUsuario(Guid userId);
 
-        Task<List<Usuario>> GetAll(); 
+        Task<List<Usuario>> GetAllAsync(); 
         Task<IdentityResult> EliminarUsuario(string username);
 
         Task<IdentityResult> AgregarUsuario(UsuarioViewModel model);
 
         Task<IdentityResult> UpdateUser(ActualizarViewModel model);
         Task<List<string>> ObtenerRolesUsuario(string username);
+
+        Task<Usuario> ObtenerPorNumeroIdentificacion(string numeroIdentificacion);
+        
         
     }
 }

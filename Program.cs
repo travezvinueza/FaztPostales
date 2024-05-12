@@ -23,6 +23,7 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(cfg =>
 
     }).AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
+    // .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>();
 
 builder.Services.AddNotyf(config =>
  {

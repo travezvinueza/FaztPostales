@@ -1,41 +1,79 @@
 @model IEnumerable<Mvc.Models.Entity.Envio>
-
-<h1>Consulta de Envíos por Número de Cédula</h1>
-
-<form asp-action="Consultar" method="get">
-    <div class="form-group">
-        <label for="numeroCedula">Número de Cédula:</label>
-        <input type="text" name="numeroCedula" class="form-control" value="@ViewData["CurrentFilter"]" />
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
-
-@if (Model.Any())
-{
-    <h2>Envíos relacionados con el usuario:</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var envio in Model)
-            {
-                <tr>
-                    <td>@envio.Codigo</td>
-                    <td>@envio.Title</td>
-                    <td>@envio.Telefono</td>
-                    <td>@envio.Description</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@{
+    ViewData["Title"] = "Consultar";
 }
-else
-{
-    <p>No se encontraron envíos relacionados con el usuario.</p>
+
+
+<p>
+    <a onclick="showInPopup('@Url.Action("Create", "Home", new { id = 0 }, Context.Request.Scheme)')"
+        class="btn btn-sm btn-success text-white">
+        <i class="fas fa-user-plus"></i> Agregar Envio
+    </a>
+</p>
+
+
+<div class="col-md-12">
+    <div class="card">
+        <div class=" card-header text-center">
+            <h5>Lista de Envios</h5>
+        </div>
+        <div class=" card-body">
+            <table id="usuario" class="table responsive table stripped">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var envio in Model)
+                    {
+                        <tr>
+                            <td>@envio.Codigo</td>
+                            <td>@envio.Title</td>
+                            <td>@envio.Telefono</td>
+                            <td>@envio.Description</td>
+
+                            <td>
+                                
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('@envio.Id')"><i
+                                        class='fa-solid fa-trash-can'></i></button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_MostrarModal" />
+    <script src="~/js/showmodal.js"></script>
+
+    <script>
+
+        function eliminarUsuario(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "La eliminación del envioo es irreversible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Home/Delete?id=' + id;
+                }
+            });
+        }
+    </script>
+
 }

@@ -26,10 +26,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/PROYECTOS/DOTNET/Mvc/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/PROYECTOS/DOTNET/Mvc/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -70,12 +66,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Lista.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxMaXN0YS5jc2h0bWw=
+[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Roles.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxSb2xlcy5jc2h0bWw=
+[C:/PROYECTOS/DOTNET/Mvc/Views/Supervisor/Lista.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJ2aXNvclxMaXN0YS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/PROYECTOS/DOTNET/Mvc/Views/_ViewImports.cshtml]

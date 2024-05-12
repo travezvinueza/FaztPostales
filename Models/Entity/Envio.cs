@@ -12,8 +12,10 @@ namespace Mvc.Models.Entity
         public string Title { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        [ForeignKey("UsuarioId")] 
         public string? UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
         
     }
 }
+

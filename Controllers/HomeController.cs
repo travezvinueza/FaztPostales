@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mvc.Data;
 using Mvc.Models;
 using Mvc.Models.Entity;
@@ -12,6 +14,7 @@ namespace Mvc.Controllers;
 public class HomeController : Controller
 {
     private readonly IEnvioService _envioService;
+    private readonly IUsuarioService _usuarioService;
     private readonly DatabaseContext _context;
     private readonly UserManager<Usuario> _userManager;
     private readonly INotyfService _notifyService;
@@ -19,43 +22,29 @@ public class HomeController : Controller
 
     public HomeController(
         IEnvioService envioService,
+          IUsuarioService usuarioService,
          UserManager<Usuario> userManager,
         DatabaseContext context,
         INotyfService notifyService)
     {
         _envioService = envioService;
+        _usuarioService = usuarioService;
         _context = context;
         _userManager = userManager;
         _notifyService = notifyService;
     }
 
-    public IActionResult Index()
-    {
-        var envios = _envioService.GetAll();
-        return View(envios);
-    }
 
     [HttpGet]
-    public async Task<IActionResult> Consultar(string numeroCedula)
+    public IActionResult Consultar()
     {
-        if (!string.IsNullOrEmpty(numeroCedula))
-        {
-            var usuario = await _userManager.FindByEmailAsync(numeroCedula);
 
-            if (usuario != null)
-            {
-                // Filtrar los envíos por el número de identificación del usuario encontrado
-                var enviosUsuario = _envioService.GetAll().Where(e => e.Usuario.NumeroIdentificacion == usuario.NumeroIdentificacion);
-                return View(enviosUsuario);
-            }
-        }
+        var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // Si no se encuentra el usuario o no se proporciona un número de cédula válido, mostrar un mensaje o redirigir a otra página
-        return View(Enumerable.Empty<Envio>());
+        var envios = _envioService.GetByUsuarioId(usuarioId);
+
+        return View(envios);
     }
-
-
-
     //metodo para crear 
     public IActionResult Create()
     {
@@ -67,25 +56,30 @@ public class HomeController : Controller
     {
         try
         {
-            var nuevoEnvio = new Envio
+            var currentUser = await _userManager.GetUserAsync(User);
+            using (var dbContext = _context)
             {
-                Codigo = envio.Codigo,
-                Title = envio.Title,
-                Telefono = envio.Telefono,
-                Description = envio.Description,
-            };
+                var nuevoEnvio = new Envio
+                {
+                    Codigo = envio.Codigo,
+                    Title = envio.Title,
+                    Telefono = envio.Telefono,
+                    Description = envio.Description,
+                    UsuarioId = currentUser!.Id,
+                };
 
-            _context.Envios.Add(nuevoEnvio);
-            await _context.SaveChangesAsync();
+                _context.Envios.Add(nuevoEnvio);
+                await _context.SaveChangesAsync();
 
-            _notifyService.Success("Envio creado correctamente");
+                _notifyService.Success("Envio creado correctamente");
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Consultar");
+            }
         }
         catch (Exception ex)
         {
             _notifyService.Error($"Error al crear el envío: {ex.Message}");
-            return RedirectToAction("Index");
+            return RedirectToAction("Consultar");
         }
     }
 
@@ -96,7 +90,7 @@ public class HomeController : Controller
         var eventToDelete = _envioService.GetById(id);
         _envioService.Delete(id);
         _notifyService.Success("Envío eliminado exitosamente.");
-        return RedirectToAction("Index");
+        return RedirectToAction("Consultar");
     }
 
 
