@@ -8,61 +8,62 @@
 <div class="container p-4">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="p-4">Consulta de Envíos</h1>
+            <h1 class="p-4 text-red">Consulta de Envíos</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <form class="d-flex" asp-action="Index" asp-controller="Supervisor">
-                <input name="searchString" class="form-control me-1" type="search" placeholder="Buscar por Nombre o Cedula"
-                    aria-label="Search" value="@ViewData["CurrentFilter"]">
+                <input name="searchString" class="form-control me-1" type="search"
+                    placeholder="Buscar por Nombre o Cedula" aria-label="Search" value="@ViewData["CurrentFilter"]">
                 <button class="btn btn-success" type="submit">BUSCAR</button>
             </form>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 p-4">
-            <table class="table" style="background-color: white;">
-                <thead>
-                    <tr>
-                        <th scope="col"><a class="text-dark" asp-controller="Supervisor" asp-action="Index"
-                                asp-route-sortOrder=@ViewData["NameSortParam"]
-                                asp-route-currentFilter="@ViewData["CurrentFilter"]">Nombres</a></th>
-                        <th scope="col">Apellidos</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">NumeroIdentificacion</th>
-                        <th scope="col">Envíos</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var cliente in Model.Items)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped" style="background-color: white;">
+                    <thead>
                         <tr>
-                            <td>@cliente.Nombres</td>
-                            <td>@cliente.Apellidos</td>
-                            <td>@cliente.Email</td>
-                            <td>@cliente.NumeroIdentificacion</td>
-                            <td>
-                                @foreach (var envio in cliente.Envios)
-                                {
-                                    <div>
-                                        Nro Guia: @envio.Id <br />
-                                        Destino: @envio.Codigo <br />
-                                        Direccion: @envio.Title <br />
-                                        Teléfono: @envio.Telefono <br />
-                                        <hr size="5px" color="black" />
-                                    </div>
-                                }
-                            </td>
-
+                            <th scope="col"><a class="text-dark" asp-controller="Supervisor" asp-action="Index"
+                                    asp-route-sortOrder=@ViewData["NameSortParam"]
+                                    asp-route-currentFilter="@ViewData["CurrentFilter"]">Nombres</a></th>
+                            <th scope="col">Apellidos</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">NumeroIdentificacion</th>
+                            <th scope="col">Envíos</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in Model.Items)
+                        {
+                            <tr>
+                                <td>@cliente.Nombres</td>
+                                <td>@cliente.Apellidos</td>
+                                <td>@cliente.Email</td>
+                                <td>@cliente.NumeroIdentificacion</td>
+                                <td>
+                                    @foreach (var envio in cliente.Envios)
+                                    {
+                                        <div>
+                                            Nro Guia: @envio.Id <br />
+                                            Destino: @envio.Codigo <br />
+                                            Direccion: @envio.Title <br />
+                                            Teléfono: @envio.Telefono <br />
+                                            <hr size="5px" color="black" />
+                                        </div>
+                                    }
+                                </td>
 
-                </tbody>
+                            </tr>
+                        }
 
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     @*Paging*@
