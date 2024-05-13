@@ -36,7 +36,6 @@ namespace Mvc.Controllers
 
         }
 
-
         
         public async Task<IActionResult> ActivateClient(string clientId)
         {
@@ -86,13 +85,12 @@ namespace Mvc.Controllers
         }
 
 
-
-
         public async Task<IActionResult> Lista()
         {
             var usuarios = await _usuarioService.GetAllAsync();
             return View(usuarios);
         }
+
 
         [HttpGet]
         public IActionResult AddUser()
@@ -166,6 +164,7 @@ namespace Mvc.Controllers
             }
         }
 
+
         [HttpGet]
         public async Task<IActionResult> EliminarUsuario(string username)
         {
@@ -201,7 +200,6 @@ namespace Mvc.Controllers
                 return NotFound();
             }
 
-            // Aquí puedes obtener los roles del usuario y pasarlos al modelo de vista si es necesario
             var rolesUsuario = await _usuarioService.ObtenerRolesUsuario(usuario.UserName);
 
             var model = new ActualizarViewModel
@@ -219,6 +217,7 @@ namespace Mvc.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(ActualizarViewModel model)
@@ -231,10 +230,9 @@ namespace Mvc.Controllers
             var result = await _usuarioService.UpdateUser(model);
             if (result.Succeeded)
             {
-                return RedirectToAction("Lista", "Supervisor"); // Redirige a la acción Lista del controlador Usuario
+                return RedirectToAction("Lista", "Supervisor"); 
             }
 
-            // Si hay algún error al actualizar el usuario, añade los errores al ModelState y vuelve a mostrar el formulario
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
@@ -242,7 +240,6 @@ namespace Mvc.Controllers
 
             return View(model);
         }
-
 
 
         public async Task<IActionResult> IndexAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -273,6 +270,7 @@ namespace Mvc.Controllers
                     Email = u.Email,
                     Envios = u.Envios.Select(e => new EnvioViewModel
                     {
+                        Id = e.Id,
                         Codigo = e.Codigo,
                         Title = e.Title,
                         Telefono = e.Telefono
@@ -299,9 +297,6 @@ namespace Mvc.Controllers
             var model = await PaginatedList<UsuarioViewModel>.CreateAsync(usuarios.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(model);
         }
-
-
-
 
     }
 }

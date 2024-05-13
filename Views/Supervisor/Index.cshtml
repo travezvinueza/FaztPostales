@@ -16,11 +16,8 @@
             <form class="d-flex" asp-action="Index" asp-controller="Supervisor">
                 <input name="searchString" class="form-control me-1" type="search" placeholder="Buscar por Nombre o Cedula"
                     aria-label="Search" value="@ViewData["CurrentFilter"]">
-                <button class="btn btn-dark" type="submit">BUSCAR</button>
+                <button class="btn btn-success" type="submit">BUSCAR</button>
             </form>
-        </div>
-        <div class="col-md-6">
-            <a asp-action="Index" class="btn btn-primary">Lista Envios</a>
         </div>
     </div>
     <div class="row">
@@ -51,9 +48,11 @@
                                 @foreach (var envio in cliente.Envios)
                                 {
                                     <div>
-                                        Código: @envio.Codigo <br />
-                                        Título: @envio.Title <br />
+                                        Nro Guia: @envio.Id <br />
+                                        Destino: @envio.Codigo <br />
+                                        Direccion: @envio.Title <br />
                                         Teléfono: @envio.Telefono <br />
+                                        <hr size="5px" color="black" />
                                     </div>
                                 }
                             </td>

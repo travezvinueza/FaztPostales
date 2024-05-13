@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using Mvc.Enum;
 
 namespace Mvc.Models
 {
     public class ActualizarViewModel
     {
-     
         public string Email { get; set; } = string.Empty;
 
         public string UserName { get; set; } = string.Empty;
@@ -23,9 +21,6 @@ namespace Mvc.Models
         public TipoUsuario TipoUsuario { get; set; }
         
         public List<string> AvailableRoles { get; set; } = new List<string>();
-
-        
-        public List<string> SelectedRoles { get; set; } = new List<string>();
         
     }
 }

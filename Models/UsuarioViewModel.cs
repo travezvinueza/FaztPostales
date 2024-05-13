@@ -20,8 +20,6 @@ namespace Mvc.Models
         public string PasswordConfirm { get; set; } = string.Empty;
         public List<string> AvailableRoles { get; set; } = new List<string>();
 
-        public List<Envio> Envioss { get; set; } = new List<Envio>();
-
         public List<EnvioViewModel> Envios { get; set; } = new List<EnvioViewModel>();
         
     }

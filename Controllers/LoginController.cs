@@ -14,7 +14,6 @@ namespace Mvc.Controllers
         private readonly IUsuarioService _usuarioService;
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
-        private readonly DatabaseContext _context;
         protected readonly IFileService _fileService;
         private readonly INotyfService _notifyService;
 
@@ -22,14 +21,12 @@ namespace Mvc.Controllers
             IUsuarioService usuarioService,
            UserManager<Usuario> userManager,
            SignInManager<Usuario> signInManager,
-            DatabaseContext context,
             IFileService fileService,
             INotyfService notifyService)
         {
             _usuarioService = usuarioService;
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
             _fileService = fileService;
             _notifyService = notifyService;
         }
@@ -81,7 +78,6 @@ namespace Mvc.Controllers
         }
 
 
-
         public IActionResult Registro()
         {
             UsuarioViewModel model = new()
@@ -99,11 +95,17 @@ namespace Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                // Verificar si ya existe un usuario con el mismo número de identificación
                 var existingUser = await _usuarioService.ObtenerPorNumeroIdentificacion(model.NumeroIdentificacion);
                 if (existingUser != null)
                 {
                     ModelState.AddModelError(string.Empty, $"El número de identificación '{model.NumeroIdentificacion}' ya está asociado a otro usuario.");
+                    return View(model);
+                }
+
+                var existingUserByEmail = await _userManager.FindByEmailAsync(model.Email);
+                if (existingUserByEmail != null)
+                {
+                    ModelState.AddModelError(string.Empty, $"El correo electrónico '{model.Email}' ya existe, Intenta con otro");
                     return View(model);
                 }
 
@@ -113,6 +115,7 @@ namespace Mvc.Controllers
                     ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
                     return View(model);
                 }
+
                 LoginViewModel loginViewModel = new()
                 {
                     UserName = model.UserName,

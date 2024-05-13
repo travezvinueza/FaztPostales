@@ -21,7 +21,8 @@
             <table id="usuario" class="table responsive table stripped">
                 <thead>
                     <tr>
-                        <th>Codigo</th>
+                        <th>NroGuia</th>
+                        <th>Destino</th>
                         <th>Direccion</th>
                         <th>Telefono</th>
                         <th>Descripcion</th>
@@ -32,6 +33,7 @@
                     @foreach (var envio in Model)
                     {
                         <tr>
+                            <td>@envio.Id</td>
                             <td>@envio.Codigo</td>
                             <td>@envio.Title</td>
                             <td>@envio.Telefono</td>

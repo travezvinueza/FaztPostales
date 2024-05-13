@@ -7,7 +7,6 @@ namespace Mvc.Models.Entity
 {
     public class Usuario : IdentityUser
     {
-       
         public string? TipoIdentificacion { get; set; }
 
         public string? NumeroIdentificacion { get; set; }

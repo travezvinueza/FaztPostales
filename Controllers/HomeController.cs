@@ -3,7 +3,6 @@ using System.Security.Claims;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Mvc.Data;
 using Mvc.Models;
 using Mvc.Models.Entity;
@@ -14,7 +13,6 @@ namespace Mvc.Controllers;
 public class HomeController : Controller
 {
     private readonly IEnvioService _envioService;
-    private readonly IUsuarioService _usuarioService;
     private readonly DatabaseContext _context;
     private readonly UserManager<Usuario> _userManager;
     private readonly INotyfService _notifyService;
@@ -22,13 +20,11 @@ public class HomeController : Controller
 
     public HomeController(
         IEnvioService envioService,
-          IUsuarioService usuarioService,
-         UserManager<Usuario> userManager,
+        UserManager<Usuario> userManager,
         DatabaseContext context,
         INotyfService notifyService)
     {
         _envioService = envioService;
-        _usuarioService = usuarioService;
         _context = context;
         _userManager = userManager;
         _notifyService = notifyService;
@@ -45,6 +41,7 @@ public class HomeController : Controller
 
         return View(envios);
     }
+    
     //metodo para crear 
     public IActionResult Create()
     {
